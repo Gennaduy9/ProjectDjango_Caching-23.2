@@ -1,0 +1,13 @@
+<hr class="featurette-divider">
+
+<div class="row featurette">
+    <div class="col-md-7">
+        <h2 class="display-4 fw-normal text-body-emphasis mb-3">{{ object.name }}</h2>
+        <p><a class="btn btn-lg btn-primary" href="{% url 'catalog:category_product' object.pk %}">Модельный ряд</a></p>
+        <p class="lead">{{ description }}</p>
+    </div>
+
+
+</div>
+
+<hr class="featurette-divider">

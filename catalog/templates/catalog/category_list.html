@@ -1,0 +1,13 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+
+    <div class="container marketing">
+        <!-- START THE FEATURETTES -->
+        {% for object in object_list %}
+            {% include 'catalog/includes/inc_category.html' %}
+        {% endfor %}
+        <!-- /END THE FEATURETTES -->
+    </div><!-- /.container -->
+
+{% endblock %}

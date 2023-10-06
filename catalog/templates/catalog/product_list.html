@@ -1,0 +1,44 @@
+{% extends 'catalog/base.html' %}
+{% load my_tegs %}
+{% block content %}
+
+
+    <div class="container marketing">
+
+        {% for object in object_list %}
+
+            <hr class="featurette-divider">
+
+            <div class="row featurette">
+                <div class="col-md-7">
+                    <h2 class="featurette-heading fw-normal lh-1">{{ object.name }}</h2>
+                    <p><a class="btn btn-lg btn-primary m-3" href="{% url 'catalog:product_detail' object.pk %}">
+                        Подробнее</a></p>
+                    <p><a class="btn btn-lg btn-primary m-3" href="{% url 'catalog:product_create' %}">
+                        Добавить продукт</a></p>
+                    <p><a class="btn btn-lg btn-outline-success m-3"
+                          href="{% url 'catalog:product_update' object.pk %}">Редактировать</a>
+                        <a class="btn btn-lg btn-outline-danger m-3"
+                           href="{% url 'catalog:product_delete' object.pk %}">Удалить</a>
+                    </p>
+                </div>
+                <div class="col-md-5">
+                    <img src="{{ object.photo|mediapath }}" class="img-thumbnail"
+                         alt="Card image cap">
+                </div>
+
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">₽ {{ object.price }}</h1>
+                    <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                        {% for version in active_versions %}
+                            {% if version.product == object %}
+                                <li>Активная версия: {{ version.number_ver }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <hr class="featurette-divider">
+        {% endfor %}
+    </div>
+{% endblock %}

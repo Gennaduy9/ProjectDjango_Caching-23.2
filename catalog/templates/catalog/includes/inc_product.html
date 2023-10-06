@@ -1,0 +1,24 @@
+{% extends 'catalog/base.html' %}
+
+{% load custom_tags %}
+
+{% block content %}
+
+    <div class="row featurette">
+        <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+            <h2 class="display-4 fw-normal text-body-emphasis mb-3">{{ object.name }}</h2>
+            <p><img src="{% mediapath object.photo %}" alt="Card image cap"/></p>
+            {{ object.description|truncatechars:300 }}
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">₽ {{ object.price }}</h1>
+            </div>
+        </div>
+        <p><a class="btn btn-lg btn-primary m-3" href="{% url 'catalog:store' %}">Купить</a></p>
+    </div>
+
+{% endblock %}
+
+
+
+
+
