@@ -38,11 +38,11 @@ class ArticleUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
         if self.request.user.groups.filter(name='Модераторы').exists():
-            return self.object
+            raise Http404
         if self.request.user.is_superuser:
             return self.object
         if self.request.user.groups.filter(name='Контент-менеджера').exists():
-            return self.object
+            raise Http404
         return self.object
 
     def get_valid(self, form):
