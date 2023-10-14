@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.forms import inlineformset_factory
 from django.http import Http404
 from django.urls import reverse_lazy, reverse
@@ -6,6 +7,7 @@ from django.views.generic import TemplateView, ListView, DetailView, CreateView,
 
 from catalog.forms import ProductForm, ProductCuttedForm, VersionForm
 from catalog.models import Category, Product, Version
+from catalog.services import get_cache_categories
 
 
 class IndexView(TemplateView):
@@ -32,7 +34,9 @@ class CategoryListView(ListView):
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        context_data['object_list'] = Category.objects.all()
+        active_versions = Version.objects.filter(activ_ver=True)
+        context_data['active_versions'] = active_versions
+        context_data['categories'] = get_cache_categories()
         return context_data
 
 
@@ -48,7 +52,15 @@ class ProductListView(ListView):
     def get_context_data(self, *args, **kwargs):
         context_data =super().get_context_data(*args, **kwargs)
 
-        category_item = Category.objects.get(pk=self.kwargs.get('pk'))
+        key = 'category_list'
+        category_list = cache.get(key)
+        if category_list is None:
+            category_list = Category.objects.get(pk=self.kwargs.get('pk'))
+            cache.set(key, category_list)
+        else:
+            category_list = Category.objects.get(pk=self.kwargs.get('pk'))
+
+        category_item =  category_list
         context_data['title'] = f'Модель автомобиля - {category_item.name}'
 
         return context_data
